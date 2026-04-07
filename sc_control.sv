@@ -52,6 +52,17 @@ module sc_control (
     localparam STORE  = 7'b0100011; // sw
     localparam BRANCH = 7'b1100011; // beq
 
+    // instanciando o datapath
+    datapath caminho_dos_dados (
+        .ALUSrc (ALUSrc),
+        .MemtoReg (MemtoReg), 
+        .RegWrite (RegWrite),
+        .MemRead (MemRead),
+        .MemWrite (MemWrite),
+        .Branch (Branch),
+        .ALUOp (ALUOp),
+    );
+
     always_comb begin
         // Set safe defaults for all signals before the case statement.
         // This prevents latches and ensures unrecognized opcodes produce
@@ -74,28 +85,39 @@ module sc_control (
                 MemWrite = 1'b0;
                 Branch   = 1'b0;
                 ALUOp    = 2'b10;
-                // instanciando o datapath
-                datapath caminho_dos_dados (
-                    .ALUSrc (ALUSrc),
-                    .MemtoReg (MemtoReg), 
-                    .RegWrite (RegWrite),
-                    .MemRead (MemRead),
-                    .MemWrite (MemWrite),
-                    .Branch (Branch),
-                    .ALUOp (ALUOp),
-                );
             end
 
             LOAD: begin
                 // TODO: assert the correct control signals for lw
+                ALUSrc   = 1'b1;
+                MemtoReg = 1'b1;
+                RegWrite = 1'b1;
+                MemRead  = 1'b1;
+                MemWrite = 1'b0;
+                Branch   = 1'b0;
+                ALUOp    = 2'b00;
             end
 
             STORE: begin
                 // TODO: assert the correct control signals for sw
+                ALUSrc   = 1'b1;
+                MemtoReg = 1'b0;
+                RegWrite = 1'b0;
+                MemRead  = 1'b0;
+                MemWrite = 1'b1;
+                Branch   = 1'b0;
+                ALUOp    = 2'b00;
             end
 
             BRANCH: begin
                 // TODO: assert the correct control signals for beq
+                ALUSrc   = 1'b0;
+                MemtoReg = 1'b0;
+                RegWrite = 1'b0;
+                MemRead  = 1'b0;
+                MemWrite = 1'b0;
+                Branch   = 1'b1;
+                ALUOp    = 2'b01;
             end
 
             default: ; // signals remain at safe defaults
