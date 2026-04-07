@@ -67,6 +67,23 @@ module sc_control (
         case (Opcode)
             R_TYPE: begin
                 // TODO: assert the correct control signals for R-type instructions
+                ALUSrc   = 1'b0;
+                MemtoReg = 1'b0;
+                RegWrite = 1'b1;
+                MemRead  = 1'b0;
+                MemWrite = 1'b0;
+                Branch   = 1'b0;
+                ALUOp    = 2'b10;
+                // instanciando o datapath
+                datapath caminho_dos_dados (
+                    .ALUSrc (ALUSrc),
+                    .MemtoReg (MemtoReg), 
+                    .RegWrite (RegWrite),
+                    .MemRead (MemRead),
+                    .MemWrite (MemWrite),
+                    .Branch (Branch),
+                    .ALUOp (ALUOp),
+                );
             end
 
             LOAD: begin
