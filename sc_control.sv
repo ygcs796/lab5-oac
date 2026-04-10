@@ -52,17 +52,6 @@ module sc_control (
     localparam STORE  = 7'b0100011; // sw
     localparam BRANCH = 7'b1100011; // beq
 
-    // instanciando o datapath
-    datapath caminho_dos_dados (
-        .ALUSrc (ALUSrc),
-        .MemtoReg (MemtoReg), 
-        .RegWrite (RegWrite),
-        .MemRead (MemRead),
-        .MemWrite (MemWrite),
-        .Branch (Branch),
-        .ALUOp (ALUOp),
-    );
-
     always_comb begin
         // Set safe defaults for all signals before the case statement.
         // This prevents latches and ensures unrecognized opcodes produce
